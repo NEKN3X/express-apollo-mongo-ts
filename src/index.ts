@@ -6,16 +6,18 @@ import { loadSchemaSync } from '@graphql-tools/load'
 import { GraphQLFileLoader } from '@graphql-tools/graphql-file-loader'
 import { resolvers } from './graphql/resolver'
 import * as dotenv from 'dotenv'
-
 dotenv.config()
-const DB_PASSWORD = process.env.DB_PASSWORD || 'PASSWORD'
-const DB_NAME = process.env.DB_NAME || 'NAME'
+
+const DB_PORT = process.env.DB_PORT
 
 mongoose.set('useFindAndModify', false)
-const MONGODB_URI = `mongodb+srv://nekn3x:${DB_PASSWORD}@gcp-cluster-tokyo.pdubx.gcp.mongodb.net/${DB_NAME}?retryWrites=true&w=majority`
+const MONGODB_URI = `mongodb://db:${DB_PORT}`
 console.log('connecting to', MONGODB_URI)
 mongoose
-  .connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => {
     console.log('connected to MongoDB')
   })
@@ -67,7 +69,7 @@ const server = new ApolloServer({
 const app = express()
 server.applyMiddleware({ app })
 
-const PORT = 3000
+const PORT = process.env.API_PORT
 
 app.listen({ port: PORT }, () =>
   console.log(

@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  db:
+    container_name: mongo_db
+    image: mongo:latest
+    command: mongod
+    ports:
+      - $DB_PORT:27017
+    volumes:
+      - ./data/db:/data/db
+      - ./data/configdb:/data/configdb
+    env_file:
+      - .env
+
+  api:
+    container_name: express_server
+    build:
+      context: .
+      dockerfile: $DOCKERFILE
+    ports:
+      - $API_PORT:3000
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+    env_file:
+      - .env
