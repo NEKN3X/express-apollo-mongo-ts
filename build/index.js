@@ -3,21 +3,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const path_1 = require("path");
 const express_1 = __importDefault(require("express"));
 const apollo_server_express_1 = require("apollo-server-express");
-const graphql_import_1 = require("graphql-import");
+const load_1 = require("@graphql-tools/load");
+const graphql_file_loader_1 = require("@graphql-tools/graphql-file-loader");
 const resolver_1 = require("./graphql/resolver");
-const typeDefs = graphql_import_1.importSchema('./graphql/schema.gql');
+const schema = load_1.loadSchemaSync(path_1.join(__dirname, '../schema.gql'), { loaders: [new graphql_file_loader_1.GraphQLFileLoader()] });
 const server = new apollo_server_express_1.ApolloServer({
-    typeDefs,
+    schema,
     resolvers: resolver_1.resolvers,
     mocks: {
         Product: () => ({
-            id: '1',
+            id: '101',
             name: '製品1',
         }),
         Brand: () => ({
-            id: '1',
+            id: '10',
             name: 'ブランド1',
         }),
     },
