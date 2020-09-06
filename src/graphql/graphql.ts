@@ -16,12 +16,17 @@ export type Scalars = {
   Float: number
 }
 
+export type Address = {
+  __typename?: 'Address'
+  street: Scalars['String']
+  city: Scalars['String']
+}
+
 export type Person = {
   __typename?: 'Person'
   name: Scalars['String']
   phone: Maybe<Scalars['String']>
-  street: Scalars['String']
-  city: Scalars['String']
+  address: Address
   id: Scalars['ID']
 }
 
@@ -34,6 +39,18 @@ export type Query = {
 
 export type QueryFindPersonArgs = {
   name: Scalars['String']
+}
+
+export type Mutation = {
+  __typename?: 'Mutation'
+  addPerson: Maybe<Person>
+}
+
+export type MutationAddPersonArgs = {
+  name: Scalars['String']
+  phone: Maybe<Scalars['String']>
+  street: Scalars['String']
+  city: Scalars['String']
 }
 
 export type WithIndex<TObject> = TObject & Record<string, any>
@@ -154,22 +171,35 @@ export type DirectiveResolverFn<
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
-  Person: ResolverTypeWrapper<Person>
+  Address: ResolverTypeWrapper<Address>
   String: ResolverTypeWrapper<Scalars['String']>
+  Person: ResolverTypeWrapper<Person>
   ID: ResolverTypeWrapper<Scalars['ID']>
   Query: ResolverTypeWrapper<{}>
   Int: ResolverTypeWrapper<Scalars['Int']>
+  Mutation: ResolverTypeWrapper<{}>
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>
 }>
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
-  Person: Person
+  Address: Address
   String: Scalars['String']
+  Person: Person
   ID: Scalars['ID']
   Query: {}
   Int: Scalars['Int']
+  Mutation: {}
   Boolean: Scalars['Boolean']
+}>
+
+export type AddressResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Address'] = ResolversParentTypes['Address']
+> = ResolversObject<{
+  street: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  city: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  __isTypeOf?: IsTypeOfResolverFn<ParentType>
 }>
 
 export type PersonResolvers<
@@ -178,8 +208,7 @@ export type PersonResolvers<
 > = ResolversObject<{
   name: Resolver<ResolversTypes['String'], ParentType, ContextType>
   phone: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
-  street: Resolver<ResolversTypes['String'], ParentType, ContextType>
-  city: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  address: Resolver<ResolversTypes['Address'], ParentType, ContextType>
   id: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType>
 }>
@@ -198,9 +227,23 @@ export type QueryResolvers<
   >
 }>
 
+export type MutationResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']
+> = ResolversObject<{
+  addPerson: Resolver<
+    Maybe<ResolversTypes['Person']>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationAddPersonArgs, 'name' | 'street' | 'city'>
+  >
+}>
+
 export type Resolvers<ContextType = any> = ResolversObject<{
+  Address: AddressResolvers<ContextType>
   Person: PersonResolvers<ContextType>
   Query: QueryResolvers<ContextType>
+  Mutation: MutationResolvers<ContextType>
 }>
 
 /**
