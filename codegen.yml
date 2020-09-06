@@ -10,3 +10,7 @@ generates:
     config:
       useIndexSignature: true
       avoidOptionals: true
+hooks:
+  afterAllFileWrite:
+    - prettier --write
+    - eslint --fix

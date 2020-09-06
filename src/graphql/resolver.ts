@@ -1,7 +1,9 @@
-import { QueryResolvers, Product } from './graphql'
+import { QueryResolvers, Person } from './graphql'
 
 const Query: QueryResolvers = {
-  product: () => ({} as Product),
+  personCount: () => 2,
+  allPersons: () => ({} as Person[]),
+  findPerson: () => ({} as Person),
 }
 
 export const resolvers = {

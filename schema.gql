@@ -1,14 +1,26 @@
+type Address {
+  street: String!
+  city: String! 
+}
+
+type Person {
+  name: String!
+  phone: String
+  address: Address!
+  id: ID!
+}
+
 type Query {
-    product(id: String): Product
+  personCount: Int!
+  allPersons: [Person!]!
+  findPerson(name: String!): Person
 }
 
-type Product {
-    id: ID!
+type Mutation {
+  addPerson(
     name: String!
-    brand: Brand!
-}
-
-type Brand {
-    id: ID!
-    name: String!
+    phone: String
+    street: String!
+    city: String!
+  ): Person
 }
