@@ -1,0 +1,12 @@
+overwrite: true
+documents: null
+schema: 'src/graphql/schema.gql'
+generates:
+  src/graphql/graphql.ts:
+    plugins:
+      - 'typescript'
+      - 'typescript-operations'
+      - 'typescript-resolvers'
+    config:
+      useIndexSignature: true
+      avoidOptionals: true
