@@ -4,19 +4,14 @@ import mongoose from 'mongoose'
 import { ApolloServer } from 'apollo-server-express'
 import { loadSchemaSync } from '@graphql-tools/load'
 import { GraphQLFileLoader } from '@graphql-tools/graphql-file-loader'
-import { resolvers } from './graphql/resolver'
-import * as dotenv from 'dotenv'
-dotenv.config()
+import { resolvers } from './graphql/resolvers'
+import { environment } from './environment'
 
-const DB_PORT = process.env.DB_PORT
-
-mongoose.set('useFindAndModify', false)
-const MONGODB_URI = `mongodb://db:${DB_PORT}`
-console.log('connecting to', MONGODB_URI)
 mongoose
-  .connect(MONGODB_URI, {
+  .connect(environment.db.url, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    useFindAndModify: false,
   })
   .then(() => {
     console.log('connected to MongoDB')
@@ -24,32 +19,27 @@ mongoose
   .catch((error) => {
     console.log('error connection to MongoDB:', error)
   })
-
 mongoose.Promise = global.Promise
 
-const noteSchema = new mongoose.Schema({
-  content: String,
-  date: Date,
-  important: Boolean,
-})
-
-const Note = mongoose.model('Note', noteSchema)
-
-const note = new Note({
-  content: 'Hello world!',
-  date: new Date(),
-  important: true,
-})
-
-note.save().then(() => {
-  console.log('note saved!')
-  mongoose.connection.close()
-})
+// const noteSchema = new mongoose.Schema({
+//   content: String,
+//   date: Date,
+//   important: Boolean,
+// })
+// const Note = mongoose.model('Note', noteSchema)
+// const note = new Note({
+//   content: 'Hello world!!!',
+//   date: new Date(),
+//   important: true,
+// })
+// note.save().then(() => {
+//   console.log('note saved')
+//   mongoose.connection.close()
+// })
 
 const schema = loadSchemaSync(join(__dirname, '../schema.gql'), {
   loaders: [new GraphQLFileLoader()],
 })
-
 const server = new ApolloServer({
   schema,
   resolvers,
@@ -68,11 +58,8 @@ const server = new ApolloServer({
 
 const app = express()
 server.applyMiddleware({ app })
-
-const PORT = process.env.API_PORT
-
-app.listen({ port: PORT }, () =>
+app.listen({ port: environment.port }, () =>
   console.log(
-    `🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`
+    `🚀 Server ready at http://localhost:${environment.port}${server.graphqlPath}`
   )
 )
