@@ -2,10 +2,17 @@
 - [x] schemaから型の生成
 - [x] mongodbにデータ保存
 - [x] Docker化
-- [ ] mongodb schemaの自動生成
-- [ ] mock切り替え
+- [x] mongodb schemaの自動生成
+- [ ] mock切り替え / .env周りの強化
+- [ ] typeとかqueryのファイル分割
 - [ ] taskアプリ api
+  - [ ] type
+  - [ ] query
+  - [ ] mutation
+  - [ ] jwt
 - [ ] taskアプリ admin
+  - [ ] admin user
+- [ ] testing
 - [ ] production build
 - [ ] taskアプリ client (React)
 - [ ] taskアプリ client (React Native)
