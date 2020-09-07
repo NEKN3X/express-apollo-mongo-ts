@@ -6,13 +6,13 @@
 - [ ] mock切り替え / .env周りの強化
 - [ ] typeとかqueryのファイル分割
 - [ ] taskアプリ api
-  - [ ] type
-  - [ ] query
-  - [ ] mutation
-  - [ ] jwt
+  - [ ] db schemaの設計
+  - [ ] schemaを書く
+  - [ ] schemaから型を生成して実装
+- [ ] testing
+- [ ] jwtで認証
 - [ ] taskアプリ admin
   - [ ] admin user
-- [ ] testing
 - [ ] production build
 - [ ] taskアプリ client (React)
 - [ ] taskアプリ client (React Native)
