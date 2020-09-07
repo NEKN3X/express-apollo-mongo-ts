@@ -4,9 +4,10 @@ schema: 'schema.gql'
 generates:
   src/graphql/graphql.ts:
     plugins:
-      - 'typescript'
-      - 'typescript-operations'
-      - 'typescript-resolvers'
+      - typescript
+      - typescript-operations
+      - typescript-resolvers
+      - typescript-mongodb
     config:
       useIndexSignature: true
       avoidOptionals: true

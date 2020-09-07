@@ -53,6 +53,11 @@ export type MutationAddPersonArgs = {
   city: Scalars['String']
 }
 
+export type AdditionalEntityFields = {
+  path: Maybe<Scalars['String']>
+  type: Maybe<Scalars['String']>
+}
+
 export type WithIndex<TObject> = TObject & Record<string, any>
 export type ResolversObject<TObject> = WithIndex<TObject>
 
@@ -178,6 +183,7 @@ export type ResolversTypes = ResolversObject<{
   Query: ResolverTypeWrapper<{}>
   Int: ResolverTypeWrapper<Scalars['Int']>
   Mutation: ResolverTypeWrapper<{}>
+  AdditionalEntityFields: AdditionalEntityFields
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>
 }>
 
@@ -190,8 +196,90 @@ export type ResolversParentTypes = ResolversObject<{
   Query: {}
   Int: Scalars['Int']
   Mutation: {}
+  AdditionalEntityFields: AdditionalEntityFields
   Boolean: Scalars['Boolean']
 }>
+
+export type UnionDirectiveArgs = {
+  discriminatorField: Maybe<Scalars['String']>
+  additionalFields: Maybe<Array<Maybe<AdditionalEntityFields>>>
+}
+
+export type UnionDirectiveResolver<
+  Result,
+  Parent,
+  ContextType = any,
+  Args = UnionDirectiveArgs
+> = DirectiveResolverFn<Result, Parent, ContextType, Args>
+
+export type AbstractEntityDirectiveArgs = {
+  discriminatorField: Scalars['String']
+  additionalFields: Maybe<Array<Maybe<AdditionalEntityFields>>>
+}
+
+export type AbstractEntityDirectiveResolver<
+  Result,
+  Parent,
+  ContextType = any,
+  Args = AbstractEntityDirectiveArgs
+> = DirectiveResolverFn<Result, Parent, ContextType, Args>
+
+export type EntityDirectiveArgs = {
+  embedded: Maybe<Scalars['Boolean']>
+  additionalFields: Maybe<Array<Maybe<AdditionalEntityFields>>>
+}
+
+export type EntityDirectiveResolver<
+  Result,
+  Parent,
+  ContextType = any,
+  Args = EntityDirectiveArgs
+> = DirectiveResolverFn<Result, Parent, ContextType, Args>
+
+export type ColumnDirectiveArgs = { overrideType: Maybe<Scalars['String']> }
+
+export type ColumnDirectiveResolver<
+  Result,
+  Parent,
+  ContextType = any,
+  Args = ColumnDirectiveArgs
+> = DirectiveResolverFn<Result, Parent, ContextType, Args>
+
+export type IdDirectiveArgs = {}
+
+export type IdDirectiveResolver<
+  Result,
+  Parent,
+  ContextType = any,
+  Args = IdDirectiveArgs
+> = DirectiveResolverFn<Result, Parent, ContextType, Args>
+
+export type LinkDirectiveArgs = { overrideType: Maybe<Scalars['String']> }
+
+export type LinkDirectiveResolver<
+  Result,
+  Parent,
+  ContextType = any,
+  Args = LinkDirectiveArgs
+> = DirectiveResolverFn<Result, Parent, ContextType, Args>
+
+export type EmbeddedDirectiveArgs = {}
+
+export type EmbeddedDirectiveResolver<
+  Result,
+  Parent,
+  ContextType = any,
+  Args = EmbeddedDirectiveArgs
+> = DirectiveResolverFn<Result, Parent, ContextType, Args>
+
+export type MapDirectiveArgs = { path: Scalars['String'] }
+
+export type MapDirectiveResolver<
+  Result,
+  Parent,
+  ContextType = any,
+  Args = MapDirectiveArgs
+> = DirectiveResolverFn<Result, Parent, ContextType, Args>
 
 export type AddressResolvers<
   ContextType = any,
@@ -251,3 +339,33 @@ export type Resolvers<ContextType = any> = ResolversObject<{
  * Use "Resolvers" root object instead. If you wish to get "IResolvers", add "typesPrefix: I" to your config.
  */
 export type IResolvers<ContextType = any> = Resolvers<ContextType>
+export type DirectiveResolvers<ContextType = any> = ResolversObject<{
+  union: UnionDirectiveResolver<any, any, ContextType>
+  abstractEntity: AbstractEntityDirectiveResolver<any, any, ContextType>
+  entity: EntityDirectiveResolver<any, any, ContextType>
+  column: ColumnDirectiveResolver<any, any, ContextType>
+  id: IdDirectiveResolver<any, any, ContextType>
+  link: LinkDirectiveResolver<any, any, ContextType>
+  embedded: EmbeddedDirectiveResolver<any, any, ContextType>
+  map: MapDirectiveResolver<any, any, ContextType>
+}>
+
+/**
+ * @deprecated
+ * Use "DirectiveResolvers" root object instead. If you wish to get "IDirectiveResolvers", add "typesPrefix: I" to your config.
+ */
+export type IDirectiveResolvers<ContextType = any> = DirectiveResolvers<
+  ContextType
+>
+import { ObjectID } from 'mongodb'
+export type AddressDbObject = {
+  street: string
+  city: string
+}
+
+export type PersonDbObject = {
+  name: string
+  phone: Maybe<string>
+  address: Address
+  _id: ObjectID
+}

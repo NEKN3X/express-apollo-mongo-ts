@@ -1,13 +1,13 @@
-type Address {
-  street: String!
-  city: String! 
+type Address @entity {
+  street: String! @column
+  city: String! @column
 }
 
-type Person {
-  name: String!
-  phone: String
-  address: Address!
-  id: ID!
+type Person @entity {
+  name: String! @column
+  phone: String @column
+  address: Address! @column
+  id: ID! @id
 }
 
 type Query {
